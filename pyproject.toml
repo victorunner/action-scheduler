@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "action-scheduler"
+version = "0.1.0"
+description = ""
+license = "MIT"
+authors = ["Victor Kireev <you@example.com>"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9"
+]
+readme = "README.md"
+packages = [{include = "action_scheduler"}]
+
+
+[tool.poetry.scripts]
+action-scheduler = "action_scheduler.main:cli"
+
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pendulum = "^2.1.2"
+pydantic = {extras = ["dotenv"], version = "^1.10.9"}
+sqlalchemy = "^2.0.16"
+apscheduler = "^3.10.1"
+types-pyyaml = "^6.0.12.10"
+pyyaml = "^6.0"
+psycopg2 = "^2.9.6"
+kafka-python = "^2.0.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

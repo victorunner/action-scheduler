@@ -1,0 +1,17 @@
+- name: Action1
+  command: command1
+  cron:
+    format: unix
+    params:
+      value: "* * * * *"
+  merge_missed: null
+  actuality_time: null
+- name: Action2
+  command: command2
+  cron:
+    format: apscheduler
+    params:
+      second: "*/20"
+      end_date: "2050-05-05"
+  merge_missed: null
+  actuality_time: null

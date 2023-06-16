@@ -1,0 +1,25 @@
+debug: true
+actions_db:
+    dialect: postgresql
+    driver: psycopg2
+    username: postgres
+    password: postgres
+    host: localhost
+    port: 5432
+    database: postgres
+track_changes_period: 15 # sec
+internal_db:
+    dialect: sqlite
+    database: database.db
+action:
+    callback: action_scheduler.callbacks:kafka_send
+    defaults:
+        merge_missed: true
+        actuality_time: 600
+kafka:
+    server: "localhost:1234"
+    topic: some_topic
+test:
+    write_sample_actions_to_db: false
+    print_apscheduler_jobs: false
+    echo_actions_db_engine: false

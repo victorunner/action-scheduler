@@ -1,0 +1,17 @@
+debug: true
+actions_db:
+    dialect: sqlite
+    database: database.db
+track_changes_period: 15 # sec
+internal_db:
+    dialect: sqlite
+    database: database.db
+action:
+    callback: action_scheduler.callbacks:print_command
+    defaults:
+        merge_missed: false
+        actuality_time: -1
+test:
+    write_sample_actions_to_db: true
+    print_apscheduler_jobs: false
+    echo_actions_db_engine: false
