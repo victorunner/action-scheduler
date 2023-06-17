@@ -23,16 +23,38 @@ TODO: Реализовать CLI
 
 ## Быстрый старт
 
-- клонировать репо
+Установите `poetry` (если ранее не был установлен). Это можно сделать командой:
+
+`pipx install poetry`
+
+Виртуальное окружение (директорию `.venv`) удобно размещать в корневой директории проекта. Для этого выполните:
+
+`poetry config virtualenvs.in-project true`
+
+Далее выполните следующие шаги:
+
+- склонируйте репо
 - `cd action-scheduler`
 - скопируйте конфигурационный файл `sample_configs/trivial/config.yaml` на уровень файла `README.md`
 - `poetry install`
-- `poetry shell`
 - `poetry run python -m action_scheduler.main`
 
-Примечание: возможно потребуется `sudo apt install libpq-dev` для `psycopg2`.
+Примечание: возможно потребуется `sudo apt install libpq-dev` (для `psycopg2`).
 
-В `stdout` будут выводиться нотификации о работе двух экшенов (описание этих экшенов см. в `sample_actions.yaml`).
+В `stdout` будет выводиться нотификация о работе двух экшенов аналогично приведенному ниже:
+
+```
+2023-06-17T23:18:40.011761+03:00 | command2
+2023-06-17T23:19:00.025409+03:00 | command1
+2023-06-17T23:19:00.033665+03:00 | command2
+2023-06-17T23:19:20.025944+03:00 | command2
+2023-06-17T23:19:40.021260+03:00 | command2
+2023-06-17T23:20:00.016597+03:00 | command1
+2023-06-17T23:20:00.021728+03:00 | command2
+2023-06-17T23:20:20.016550+03:00 | command2
+```
+
+Детальное описание этих экшенов см. в `sample_actions.yaml`.
 
 ## Расписание
 
@@ -47,10 +69,10 @@ TODO: Реализовать CLI
 
 ```
 {
-    format: "apscheduler",
-    params:
-        second: "*/20"
-        end_date: "2050-05-05"
+    "format": "apscheduler",
+    "params":
+        "second": "*/20"
+        "end_date": "2050-05-05"
 }
 ```
 
@@ -68,8 +90,8 @@ TODO: Реализовать CLI
 Пример `config.yaml` из `sample_configs/practical/`:
 
 ```
-debug: true
-actions_db:
+debug: false
+actions_db: # настройки подключения к actions_db (т.е. к базе с экшенами)
     dialect: postgresql
     driver: psycopg2
     username: postgres
@@ -77,19 +99,19 @@ actions_db:
     host: localhost
     port: 5432
     database: postgres
-track_changes_period: 15 # sec
-internal_db:
+track_changes_period: 15 # период проверки базы actions_db на предмет изменений (в сек)
+internal_db: # (опционально) настройки подключения к internal_db (хранит служебную информацию, чтобы не потерять экшены после перезагрузки)
     dialect: sqlite
     database: database.db
 action:
-    callback: action_scheduler.callbacks:kafka_send
-    defaults:
+    callback: action_scheduler.callbacks:kafka_send # callback экшенов
+    defaults: # дефолтные настройки экшенов
         merge_missed: true
         actuality_time: 600
 kafka:
     server: "localhost:1234"
     topic: some_topic
-test:
+test: # настройки для тестировния
     write_sample_actions_to_db: false
     print_apscheduler_jobs: false
     echo_actions_db_engine: false
